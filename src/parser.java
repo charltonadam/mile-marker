@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,11 +42,15 @@ public class parser {
         try {
 
             while (true) {
-                mifInput = mifScanner.nextLine();
+                mifInput = mifScanner.next();
 
-                while (!mifInput.equals("PLINE MULTIPLE 1")) {
-                    mifInput = mifScanner.nextLine();
+                while (!mifInput.equals("PLINE")) {
+                    mifInput = mifScanner.next();
                 }
+
+                //we can now assume that we have the start of the segments in the .mif file
+                mifScanner.next();
+                int numberOfRoads = mifScanner.nextInt();
 
 
                 midInput = midScanner.nextLine();
@@ -56,24 +61,43 @@ public class parser {
                 road_segment r = new road_segment(numberOfSegments, midInput, Double.parseDouble(splits[5]), Double.parseDouble(splits[6]));
 
 
-                int numberOfPoints = mifScanner.nextInt();
+                for(int k = 0; k < numberOfRoads; k++) {
+                    int numberOfPoints = mifScanner.nextInt();
 
-                for (int i = 0; i < numberOfPoints; i++) {
-                    r.addLocation(new GeoPoint(mifScanner.nextDouble(), mifScanner.nextDouble()));
+                    for (int i = 0; i < numberOfPoints; i++) {
+                        r.addLocation(new GeoPoint(mifScanner.nextDouble(), mifScanner.nextDouble()));
+                    }
+
                 }
-
                 roads.add(r);
+
             }
 
 
 
         } catch(Exception e) {
-            //this catch statement is not a problem, it simply means we have used up
-            //all avaliable inputs.  Here, we simply end the program.
 
-            System.out.println("Finish");
 
         }
+        File outputFile = new File("output.txt");
+        PrintWriter writer = null;
+
+        try {
+            writer = new PrintWriter(outputFile);
+        }catch(Exception e) {
+
+        }
+
+
+        for(road_segment r:roads) {
+            for(MileMarker m:r.getMileMarkers()) {
+                writer.println(m.toString());
+            }
+        }
+
+
+
+
 
     }
 }
