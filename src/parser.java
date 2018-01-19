@@ -79,7 +79,7 @@ public class parser {
 
 
         }
-        File outputFile = new File("output.txt");
+        File outputFile = new File("output.csv");
         PrintWriter writer = null;
 
         try {
@@ -88,12 +88,20 @@ public class parser {
 
         }
 
+        for(road_segment r:roads) {
+            if(r.path.size() > 0) {
+                writer.println(r.path.get(0).toString());
+            }
+        }
 
+
+/*
         for(road_segment r:roads) {
             for(MileMarker m:r.getMileMarkers()) {
                 writer.println(m.toString());
             }
         }
+*/
 
 
 

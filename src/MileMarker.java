@@ -11,7 +11,7 @@ public class MileMarker {
     }
 
     public String toString() {
-        return location.toString() + " Mile:" + mileNumber + " " + attributes;
+        return location.toString() + "," + mileNumber + "," + attributes;
     }
 
 

@@ -15,6 +15,8 @@ public class road_segment {
     double start;
     double end;
 
+    double calculatedDistance;
+
     public road_segment(int segment_number, String attributes, double start, double end) {
         this.segment_number = segment_number;
         this.attributes = attributes;
@@ -22,10 +24,17 @@ public class road_segment {
         this.end = end;
 
         path = new LinkedList<>();
+
+        calculatedDistance = 0;
     }
 
 
     public void addLocation(GeoPoint g) {
+
+        if(path.size() != 0) {
+            calculatedDistance += GeoPoint.distance(path.get(path.size() - 1), g);
+        }
+
         path.add(g);
     }
 
@@ -47,18 +56,22 @@ public class road_segment {
         int pathIndex = 1;
         int pathMaxIndex = path.size();
 
+
+        //get the scaling factor to accomodate for overcorrection
+        double scale = (end - start) / calculatedDistance;
+
         while(pathIndex < pathMaxIndex && target <= end) {
 
 
-            double distance = GeoPoint.distance(path.get(pathIndex - 1), path.get(pathIndex));
+            double distance = GeoPoint.distance(path.get(pathIndex - 1), path.get(pathIndex)) * scale;
             if(currentPosition + distance >= target) {
                 //we know that in between these two points there is a mile marker
 
                 //first, get how far along in between the indexes the mile marker is
-                double scale = target - currentPosition / distance;
+                double portion = (target - currentPosition) / distance;
 
-                double latitude = (path.get(pathIndex).latitude - path.get(pathIndex - 1).latitude) / scale + path.get(pathIndex - 1).latitude;
-                double longitude = (path.get(pathIndex).longitude - path.get(pathIndex - 1).longitude) / scale + path.get(pathIndex - 1).longitude;
+                double latitude = (path.get(pathIndex).latitude - path.get(pathIndex - 1).latitude) * portion * scale + path.get(pathIndex - 1).latitude;
+                double longitude = (path.get(pathIndex).longitude - path.get(pathIndex - 1).longitude) * portion * scale + path.get(pathIndex - 1).longitude;
 
 
                 mileMarkers.add(new MileMarker(new GeoPoint(latitude, longitude), attributes, (int) target));
@@ -79,4 +92,11 @@ public class road_segment {
 
         return mileMarkers;
     }
+
+
+
+
+
+
+
 }
