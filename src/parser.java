@@ -75,7 +75,7 @@ public class parser {
 
 
 
-        } catch(Exception e) {
+        } catch(Exception ignored) {
 
 
         }
@@ -84,15 +84,31 @@ public class parser {
 
         try {
             writer = new PrintWriter(outputFile);
-        }catch(Exception e) {
+        }catch(Exception ignored) {
 
         }
 
+
+
+        //we have a lot of things to do now
+        //first, we have to sort the list of road segments
+        roads.sort(new road_segment_comparator());
+
+
+        //now that we have sorted the list of roads, 
+
+
+
+
+
+
+        /*
         for(road_segment r:roads) {
             if(r.path.size() > 0) {
                 writer.println(r.path.get(0).toString());
             }
         }
+        */
 
 
 /*
@@ -108,4 +124,22 @@ public class parser {
 
 
     }
+
+
+
+    public static class road_segment_comparator implements Comparator {
+
+        public int compare(Object o1, Object o2) {
+            road_segment r1 = (road_segment) o1;
+            road_segment r2 = (road_segment) o2;
+
+            int retVal = (int) ( r1.start * 10 - r2.start * 10 );
+
+            return retVal;
+        }
+
+    }
+
+
 }
+
