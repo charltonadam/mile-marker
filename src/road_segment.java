@@ -16,12 +16,14 @@ public class road_segment {
     double end;
 
     double calculatedDistance;
+    double length;
 
     public road_segment(int segment_number, String attributes, double start, double end) {
         this.segment_number = segment_number;
         this.attributes = attributes;
         this.start = start;
         this.end = end;
+        length = end - start;
 
         path = new LinkedList<>();
 
@@ -93,7 +95,15 @@ public class road_segment {
         return mileMarkers;
     }
 
+    public String toString() {
+        if(path.size() == 0) {
+            return "";
+        }
+        MileMarker m = new MileMarker(path.get(0), attributes, (int) start);
+        return m.toString();
 
+
+    }
 
 
 

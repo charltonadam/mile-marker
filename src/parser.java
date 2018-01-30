@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -90,36 +91,64 @@ public class parser {
 
 
 
+
+
+
+
+
+
+
+
+
         //we have a lot of things to do now
         //first, we have to sort the list of road segments
         roads.sort(new road_segment_comparator());
 
 
-        //now that we have sorted the list of roads, 
+        //now that we have sorted the list of roads,
+        //break them into the segmentBuilder
 
+        List<segmentBuilder> stitching = new LinkedList<>();
 
+        //go through each iteration of the segments, add them to segments as needed
+        stitching.add(new segmentBuilder());
+        stitching.get(0).add(roads.get(0));
+        double previousDistance = roads.get(0).length;
 
-
-
-
-        /*
         for(road_segment r:roads) {
-            if(r.path.size() > 0) {
-                writer.println(r.path.get(0).toString());
+
+            if(previousDistance < .98) {
+                //add it to the previous segment
+
+                stitching.get(stitching.size() - 1).add(r);
+
+            } else {
+                //add it to a new segment
+
+                segmentBuilder seg = new segmentBuilder();
+                seg.add(r);
+                stitching.add(seg);
             }
         }
-        */
+        //go through each segmentBuilder, reduce it
 
+        for(segmentBuilder seg: stitching) {
 
-/*
-        for(road_segment r:roads) {
-            for(MileMarker m:r.getMileMarkers()) {
-                writer.println(m.toString());
-            }
+            seg.reduce();
+            writer.println(seg.toString());
+
         }
-*/
 
 
+
+
+
+
+        //option 2, don't use reduce() method
+
+        List<road_segment> option2 = new LinkedList<>();
+
+        
 
 
 
