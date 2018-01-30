@@ -46,18 +46,20 @@ public class segmentBuilder {
 
             for(int k = 1; k < roads.size(); k++) {     //determines which roads to use in a combination
 
-                if(binary.charAt(k - 1) == '1') {
-                    //first, calculate the current error
+                if(binary.length() >= k) {
 
-                    double error = Math.abs(currentRoadLength - 1);
-                    error *= 10;
-                    currentError += Math.pow(error, 2);
+                    if(binary.charAt(k - 1) == '1') {
+                        //first, calculate the current error
 
-                    //TODO: if implementation is too slow, add current error checking to cut calculation short
+                        double error = Math.abs(currentRoadLength - 1);
+                        error *= 10;
+                        currentError += Math.pow(error, 2);
+
+                        //TODO: if implementation is too slow, add current error checking to cut calculation short
 
 
-
-                    currentRoadLength = 0;
+                        currentRoadLength = 0;
+                    }
 
                 } else {
                     //road is not included, do nothing?
@@ -91,9 +93,12 @@ public class segmentBuilder {
         String binary = Integer.toBinaryString(bestIteration);
 
         for(int i = 1; i < roads.size(); i++) {
+            if(binary.length() >= i) {
 
-            if(binary.charAt(i - 1) == '1') {
-                updatedRoads.add(roads.get(i));
+                if(binary.charAt(i - 1) == '1') {
+                    updatedRoads.add(roads.get(i));
+
+                }
             }
 
         }
