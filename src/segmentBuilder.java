@@ -16,7 +16,7 @@ public class segmentBuilder {
     }
 
     public void reduce() {
-        if(roads.size() == 1) {
+        if(roads.size() <= 1) {
             //if there is only one roads, then we can assume that there is a mile marker associated with it
             return;
         } else if(roads.size() == 2) {

@@ -129,6 +129,7 @@ public class parser {
                 seg.add(r);
                 stitching.add(seg);
             }
+            previousDistance = r.length;
         }
         //go through each segmentBuilder, reduce it
 
